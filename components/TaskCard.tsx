@@ -1,4 +1,3 @@
-// components/TaskCard.tsx
 import { useState } from "react";
 import { Task } from "../types";
 
@@ -58,8 +57,8 @@ export default function TaskCard({
          
     ${
       task.status === "completed"
-        ? "border border-emerald-400"
-        : "border border-fuchsia-400"
+        ? "border border-emerald-600"
+        : "border border-fuchsia-600"
     }`}
     >
       {isEditing ? (
@@ -135,6 +134,15 @@ export default function TaskCard({
           )}
 
           <div className="flex flex-wrap gap-2 justify-end mt-4">
+            {onSuggestSubtasks && (
+              <button
+                onClick={handleSuggestSubtasks}
+                disabled={submittingSubtasks}
+                className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
+              >
+                {submittingSubtasks ? "Suggesting..." : "AI Suggest"}
+              </button>
+            )}
             <button
               onClick={handleToggleStatus}
               className={`text-white text-sm py-1.5 px-4 rounded-lg transition font-medium shadow-inner hover:cursor-pointer ${
@@ -159,16 +167,6 @@ export default function TaskCard({
             >
               Delete
             </button>
-
-            {/* {onSuggestSubtasks && ( */}
-            <button
-              onClick={handleSuggestSubtasks}
-              disabled={submittingSubtasks}
-              className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
-            >
-              {submittingSubtasks ? "Suggesting..." : "AI Suggest"}
-            </button>
-            {/* )} */}
           </div>
         </>
       )}
