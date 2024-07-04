@@ -1,4 +1,6 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { FaCalendarAlt } from "react-icons/fa";
 import { Task } from "../types";
 
 interface TaskCardProps {
@@ -27,6 +29,7 @@ export default function TaskCard({
       description: editedDescription,
       dueDate: editedDueDate,
     });
+    toast.success("Task updated successfully.");
     setIsEditing(false);
   };
 
@@ -53,12 +56,12 @@ export default function TaskCard({
 
   return (
     <div
-      className={`group relative rounded-2xl p-6 shadow-xl backdrop-blur-md transition-all duration-300 bg-gradient-to-br from-white/5 via-white/2 to-white/5 hover:shadow-2xl 
+      className={`group relative rounded-2xl p-6 shadow-xl bg-[#0c0c0c] hover:shadow-2xl 
          
     ${
       task.status === "completed"
-        ? "border border-emerald-600"
-        : "border border-fuchsia-600"
+        ? "border-gradient-emerald"
+        : "border-gradient-fuchsia"
     }`}
     >
       {isEditing ? (
@@ -86,13 +89,13 @@ export default function TaskCard({
           <div className="flex justify-end gap-2">
             <button
               onClick={handleSave}
-              className="bg-emerald-500 hover:bg-emerald-600 text-white text-sm py-1.5 px-4 rounded-lg transition"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
             >
               Save
             </button>
             <button
               onClick={() => setIsEditing(false)}
-              className="bg-zinc-700 hover:bg-zinc-600 text-white text-sm py-1.5 px-4 rounded-lg transition"
+              className="bg-zinc-600 hover:bg-zinc-700 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
             >
               Cancel
             </button>
@@ -100,14 +103,17 @@ export default function TaskCard({
         </>
       ) : (
         <>
-          <h3 className="text-2xl font-semibold text-white mb-2 tracking-tight">
-            {task.title}
+          <h3 className="text-xl font-semibold text-white mb-2 tracking-tight">
+            {task.title || "No title"}
           </h3>
-          <p className="text-gray-300 mb-3 text-sm leading-relaxed">
+          <p className="text-white mb-3 text-sm leading-relaxed">
             {task.description || "No description"}
           </p>
-          <p className="text-xs text-gray-400 mb-2">🗓 Due: {task.dueDate}</p>
-          <p className="text-xs text-gray-400 mb-4">
+          <p className="text-xs text-white mb-2 flex items-center gap-1">
+            {" "}
+            <FaCalendarAlt className="text-white" /> Due: {task.dueDate}
+          </p>
+          <p className="text-xs text-white mb-4">
             Status:
             <span
               className={`ml-1 font-medium ${
@@ -133,19 +139,19 @@ export default function TaskCard({
             </div>
           )}
 
-          <div className="flex flex-wrap gap-2 justify-end mt-4">
-            {onSuggestSubtasks && (
-              <button
-                onClick={handleSuggestSubtasks}
-                disabled={submittingSubtasks}
-                className="bg-gradient-to-r from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
-              >
-                {submittingSubtasks ? "Suggesting..." : "AI Suggest"}
-              </button>
-            )}
+          <div className="flex flex-wrap justify-center items-center gap-3">
+            {/* {onSuggestSubtasks && ( */}
+            <button
+              onClick={handleSuggestSubtasks}
+              disabled={submittingSubtasks}
+              className="bg-gradient-to-r w-[45%] font-medium  from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
+            >
+              {submittingSubtasks ? "Suggesting..." : "AI Suggest"}
+            </button>
+            {/* )} */}
             <button
               onClick={handleToggleStatus}
-              className={`text-white text-sm py-1.5 px-4 rounded-lg transition font-medium shadow-inner hover:cursor-pointer ${
+              className={`text-white text-sm w-[45%] py-1.5 px-4 rounded-lg transition font-medium shadow-inner hover:cursor-pointer ${
                 task.status === "pending"
                   ? "bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500"
                   : "bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500"
@@ -156,14 +162,14 @@ export default function TaskCard({
 
             <button
               onClick={() => setIsEditing(true)}
-              className="bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
+              className="bg-gradient-to-r w-[45%] font-medium from-blue-500 to-indigo-500 hover:from-blue-400 hover:to-indigo-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
             >
               Edit
             </button>
 
             <button
               onClick={() => onDeleteTask(task.id)}
-              className="bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-400 hover:to-pink-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
+              className="bg-gradient-to-r font-medium w-[45%] from-red-500 to-pink-500 hover:from-red-400 hover:to-pink-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
             >
               Delete
             </button>

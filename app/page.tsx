@@ -8,7 +8,7 @@ import { Toaster } from "react-hot-toast";
 export default function Home() {
   const [tasks, setTasks] = useState<Task[]>([]); //array of Task
 
-  // Load tasks from localStorage on component mount
+  // Load tasks from localStorage
   useEffect(() => {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
@@ -48,7 +48,7 @@ export default function Home() {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <h2 className="text-3xl sm:text-4xl xl:text-[42px] text-center mt-6 mb-7 sm:mb-10 font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">
+      <h2 className="text-2xl sm:text-4xl xl:text-[42px] text-center mt-0 sm:mt-6 mb-5 sm:mb-10 font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-blue-500 to-indigo-500">
         AI-Powered <span className="text-[#FFFFFC]">Smart Task Manager</span>
       </h2>
 
@@ -80,8 +80,10 @@ export default function Home() {
           duration: 5000,
           removeDelay: 1000,
           style: {
-            background: "#262626",
+            background: "#161616",
             color: "#fff",
+            borderColor: "#222",
+            borderWidth: "1px",
           },
 
           // Default options for specific types
