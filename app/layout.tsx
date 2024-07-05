@@ -1,4 +1,3 @@
-// app/layout.tsx
 import LoadingProvider from "@/components/LoadingProvider";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -23,11 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
-      <body className="antialiased relative min-h-screen bg-slate-950 text-white font-sans">
-        {/* Background gradient effect */}
+      <body className="antialiased relative min-h-screen bg-slate-950 text-[#FFFFFC] font-sans">
         <div className="fixed inset-0 -z-10">
           <div className="h-full w-full [background:radial-gradient(125%_125%_at_50%_10%,#000_60%,#63e_100%)]"></div>
         </div>
+
         <LoadingProvider>{children}</LoadingProvider>
       </body>
     </html>

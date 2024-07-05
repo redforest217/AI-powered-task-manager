@@ -1,4 +1,3 @@
-// app/api/gemini/route.ts
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -8,7 +7,7 @@ export async function POST(req: NextRequest) {
 
     if (!prompt) {
       return NextResponse.json(
-        { error: "Prompt is required" },
+        { error: "Prompt is required!" },
         { status: 400 }
       );
     }
@@ -17,15 +16,15 @@ export async function POST(req: NextRequest) {
 
     if (!apiKey) {
       return NextResponse.json(
-        { error: "Google Gemini API key not configured." },
+        { error: "Google Gemini API key not configured!" },
         { status: 500 }
       );
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); // Or "gemini-pro" if you prefer
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
-    // Refined prompt to instruct the model to provide specific output
+    // prompt to instruct the model to provide specific output
     const fullPrompt = `Break down the following task into 3 to 5 smaller, actionable subtasks. Each subtask should be concise. Provide ONLY the comma-separated subtasks, with no additional text, numbering, or explanations.
     For example:
     Task: "Plan birthday party"

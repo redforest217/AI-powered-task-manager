@@ -1,4 +1,3 @@
-// components/AddTaskForm.tsx
 import { NewTask } from "@/types";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -27,7 +26,6 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
       dueDate: dueDate,
     });
 
-    // Toast for task added is now handled in page.tsx after state update
     setTitle("");
     setDescription("");
     setDueDate("");
@@ -52,7 +50,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         <input
           type="text"
           id="title"
-          className="w-full rounded-lg bg-white/10 text-white px-4 py-2 border border-transparent focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 placeholder:text-gray-400"
+          className="w-full rounded-lg bg-white/10 text-[#FFFFFC] px-4 py-2 border border-transparent focus:border-sky-500 focus:outline-none focus:ring-1 focus:ring-sky-500 placeholder:text-gray-400"
           placeholder="Enter task title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
@@ -69,7 +67,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         <textarea
           id="description"
           rows={3}
-          className="w-full rounded-lg bg-white/10 text-white px-4 py-2 border border-transparent focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder:text-gray-400"
+          className="w-full rounded-lg bg-white/10 text-[#FFFFFC] px-4 py-2 border border-transparent focus:border-purple-500 focus:outline-none focus:ring-1 focus:ring-purple-500 placeholder:text-gray-400"
           placeholder="Enter task description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -86,7 +84,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
         <input
           type="date"
           id="dueDate"
-          className="w-full rounded-lg bg-white/10 text-white px-4 py-2 border border-transparent focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder:text-gray-400 hover:cursor-pointer"
+          className="w-full rounded-lg bg-white/10 text-[#FFFFFC] px-4 py-2 border border-transparent focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 placeholder:text-gray-400 hover:cursor-pointer"
           value={dueDate}
           onChange={(e) => setDueDate(e.target.value)}
         />
@@ -94,7 +92,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
 
       <button
         type="submit"
-        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 flex justify-center items-center gap-2 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-[#FFFFFC] font-semibold py-2 px-4 rounded-lg shadow-md transition-all duration-300 flex justify-center items-center gap-2 hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <FaPlus /> Add Task
       </button>

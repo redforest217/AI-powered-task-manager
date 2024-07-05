@@ -19,6 +19,7 @@
   border-radius: inherit;
   background: linear-gradient(to right, #065f46, #048d66);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   z-index: -1;
@@ -38,12 +39,51 @@
   border-radius: inherit;
   background: linear-gradient(to right, #701a75, #be185d);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   z-index: -1;
 }
 
 /* --------------------------Gradient Borders------------------------------------ */
+
+
+
+
+
+/*-------------------------------------------------Glow Effect for Task Cards----------------------------------*/
+.task-card-glow {
+  box-shadow:
+    0 0 4px rgba(60, 20, 100, 0.9),
+    0 0 15px rgba(150, 30, 170, 0.7),
+    0 0 25px rgba(100, 10, 120, 0.4);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.task-card-glow-completed {
+  box-shadow:
+    0 0 4px rgba(0, 70, 50, 0.9),
+    0 0 15px rgba(5, 120, 80, 0.7),
+    0 0 25px rgba(0, 70, 50, 0.4);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.task-card-glow:hover {
+  box-shadow:
+    0 0 6px rgba(60, 20, 100, 1.0),
+    0 0 20px rgba(150, 30, 170, 0.8),
+    0 0 35px rgba(100, 10, 120, 0.6);
+}
+
+.task-card-glow-completed:hover {
+  box-shadow:
+    0 0 6px rgba(0, 70, 50, 1.0),
+    0 0 20px rgba(5, 120, 80, 0.8),
+    0 0 35px rgba(0, 70, 50, 0.6);
+}
+
+/*-------------------------------------------------Glow Effect for Task Cards----------------------------------*/
+
 
 
 
