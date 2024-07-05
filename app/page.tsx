@@ -1,49 +1,122 @@
+// app/page.tsx
 "use client";
+
 import AddTaskForm from "@/components/AddTaskForm";
 import TaskCard from "@/components/TaskCard";
 import { NewTask, Task } from "@/types";
 import { useEffect, useState } from "react";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function Home() {
-  const [tasks, setTasks] = useState<Task[]>([]); //array of Task
+  const [tasks, setTasks] = useState<Task[]>([]);
 
-  // Load tasks from localStorage
+  // Load tasks from localStorage on component mount
   useEffect(() => {
     const storedTasks = localStorage.getItem("tasks");
     if (storedTasks) {
       try {
-        setTasks(JSON.parse(storedTasks));
+        const parsedTasks: Task[] = JSON.parse(storedTasks);
+        setTasks(parsedTasks);
+        console.log("Tasks loaded from localStorage:", parsedTasks); // For debugging
       } catch (e) {
         console.error("Failed to parse tasks from localStorage!", e);
-
-        // Optionally clear corrupted data
-        localStorage.removeItem("tasks");
+        toast.error(
+          "Failed to load tasks from local storage. Data might be corrupted."
+        );
+        localStorage.removeItem("tasks"); // Clear corrupted data
       }
+    } else {
+      console.log("No 'tasks' item found in localStorage on load."); // For debugging
     }
   }, []);
 
   // Save tasks to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
+    // Only save if tasks is not undefined or null (important for initial render)
+    if (tasks !== null && tasks !== undefined) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+      console.log("Tasks saved to localStorage:", tasks); // For debugging
+    }
   }, [tasks]);
 
   const handleAddTask = (newTaskData: NewTask) => {
     const newTask: Task = {
-      id: crypto.randomUUID(), // Generate a unique ID
+      id: crypto.randomUUID(),
       ...newTaskData,
+      subtasks: [], // Initialize with empty subtasks
     };
     setTasks((prevTasks) => [...prevTasks, newTask]);
+    toast.success("Task added successfully!");
   };
 
   const handleUpdateTask = (updatedTask: Task) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
     );
+    // A toast for update is handled by TaskCard for edits,
+    // and for AI suggestion, it's handled directly in handleSuggestSubtasks
   };
 
   const handleDeleteTask = (id: string) => {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== id));
+    toast.success("Task deleted successfully!");
+  };
+
+  const handleSuggestSubtasks = async (task: Task) => {
+    // Check if task already has subtasks to prevent redundant calls
+    if (task.subtasks && task.subtasks.length > 0) {
+      toast("This task already has subtasks. Consider editing them.", {
+        icon: "ℹ️",
+        style: {
+          background: "#333",
+          color: "#fff",
+        },
+      });
+      return;
+    }
+
+    const toastId = toast.loading("Generating subtasks with AI...", {
+      style: {
+        background: "#161616",
+        color: "#fff",
+        borderColor: "#222",
+        borderWidth: "1px",
+      },
+    });
+
+    try {
+      const response = await fetch("/api/gemini", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ prompt: task.title }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Failed to fetch subtasks from AI.");
+      }
+
+      const data = await response.json();
+      if (data.subtasks && data.subtasks.length > 0) {
+        handleUpdateTask({ ...task, subtasks: data.subtasks });
+        toast.success("Subtasks suggested!", { id: toastId });
+      } else {
+        toast.error(
+          "AI couldn't suggest subtasks. Try a different task title.",
+          { id: toastId }
+        );
+      }
+    } catch (error) {
+      console.error("Error calling Gemini API:", error);
+      toast.error(
+        `Failed to suggest subtasks: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`,
+        { id: toastId }
+      );
+    }
   };
 
   return (
@@ -66,7 +139,7 @@ export default function Home() {
               task={task}
               onUpdateTask={handleUpdateTask}
               onDeleteTask={handleDeleteTask}
-              // We will pass an onSuggestSubtasks prop later for AI
+              onSuggestSubtasks={handleSuggestSubtasks}
             />
           ))
         )}
@@ -75,7 +148,6 @@ export default function Home() {
         position="top-right"
         reverseOrder={false}
         toastOptions={{
-          // Define default options
           className: "",
           duration: 5000,
           removeDelay: 1000,
@@ -85,12 +157,17 @@ export default function Home() {
             borderColor: "#222",
             borderWidth: "1px",
           },
-
-          // Default options for specific types
           success: {
             duration: 4000,
             iconTheme: {
               primary: "green",
+              secondary: "white",
+            },
+          },
+          error: {
+            duration: 5000,
+            iconTheme: {
+              primary: "#ff4d4f",
               secondary: "white",
             },
           },

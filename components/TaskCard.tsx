@@ -1,7 +1,8 @@
+// components/TaskCard.tsx
+import { Task } from "@/types"; // Use absolute path for consistency
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { FaCalendarAlt } from "react-icons/fa";
-import { Task } from "../types";
 
 interface TaskCardProps {
   task: Task;
@@ -20,16 +21,18 @@ export default function TaskCard({
   const [editedTitle, setEditedTitle] = useState(task.title);
   const [editedDescription, setEditedDescription] = useState(task.description);
   const [editedDueDate, setEditedDueDate] = useState(task.dueDate);
-  const [submittingSubtasks, setSubmittingSubtasks] = useState(false); // For AI loading state
+  // submittingSubtasks state is managed by page.tsx's toast, not strictly needed here for UI disable
+  // But keeping it for consistency if you add more complex local loading indicators
+  const [submittingSubtasks, setSubmittingSubtasks] = useState(false);
 
   const handleSave = () => {
     onUpdateTask({
       ...task,
-      title: editedTitle,
-      description: editedDescription,
+      title: editedTitle.trim(), // Trim values on save
+      description: editedDescription.trim(),
       dueDate: editedDueDate,
     });
-    toast.success("Task updated successfully.");
+    toast.success("Task updated successfully."); // User feedback for direct edit
     setIsEditing(false);
   };
 
@@ -38,18 +41,18 @@ export default function TaskCard({
       ...task,
       status: task.status === "pending" ? "completed" : "pending",
     });
+    toast.success(
+      `Task marked as ${task.status === "pending" ? "completed" : "pending"}.`
+    ); // User feedback for status change
   };
 
-  const handleSuggestSubtasks = async () => {
+  const handleSuggestClick = async () => {
     if (onSuggestSubtasks) {
-      setSubmittingSubtasks(true);
+      setSubmittingSubtasks(true); // Indicate local loading
       try {
         await onSuggestSubtasks(task);
-      } catch (error) {
-        console.error("Error suggesting subtasks:", error);
-        alert("Failed to suggest subtasks. Please try again.");
       } finally {
-        setSubmittingSubtasks(false);
+        setSubmittingSubtasks(false); // Reset local loading
       }
     }
   };
@@ -57,14 +60,14 @@ export default function TaskCard({
   return (
     <div
       className={`group relative rounded-2xl p-6 shadow-xl bg-[#0c0c0c] hover:shadow-2xl 
-         
-    ${
-      task.status === "completed"
-        ? "border-gradient-emerald"
-        : "border-gradient-fuchsia"
-    }`}
+      ${
+        task.status === "completed"
+          ? "border-gradient-emerald"
+          : "border-gradient-fuchsia"
+      }`}
     >
       {isEditing ? (
+        // Edit Mode
         <>
           <input
             type="text"
@@ -102,6 +105,7 @@ export default function TaskCard({
           </div>
         </>
       ) : (
+        // Display Mode
         <>
           <h3 className="text-xl font-semibold text-white mb-2 tracking-tight">
             {task.title || "No title"}
@@ -110,7 +114,6 @@ export default function TaskCard({
             {task.description || "No description"}
           </p>
           <p className="text-xs text-white mb-2 flex items-center gap-1">
-            {" "}
             <FaCalendarAlt className="text-white" /> Due: {task.dueDate}
           </p>
           <p className="text-xs text-white mb-4">
@@ -126,6 +129,7 @@ export default function TaskCard({
             </span>
           </p>
 
+          {/* Subtasks Section */}
           {task.subtasks && task.subtasks.length > 0 && (
             <div className="mb-4">
               <h4 className="font-semibold text-gray-200 mb-2 text-sm">
@@ -139,16 +143,17 @@ export default function TaskCard({
             </div>
           )}
 
+          {/* Action Buttons */}
           <div className="flex flex-wrap justify-center items-center gap-3">
-            {/* {onSuggestSubtasks && ( */}
-            <button
-              onClick={handleSuggestSubtasks}
-              disabled={submittingSubtasks}
-              className="bg-gradient-to-r w-[45%] font-medium  from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer"
-            >
-              {submittingSubtasks ? "Suggesting..." : "AI Suggest"}
-            </button>
-            {/* )} */}
+            {onSuggestSubtasks && (
+              <button
+                onClick={handleSuggestClick}
+                disabled={submittingSubtasks} // Disable button during AI call
+                className="bg-gradient-to-r w-[45%] font-medium from-purple-500 to-fuchsia-500 hover:from-purple-400 hover:to-fuchsia-400 text-white text-sm py-1.5 px-4 rounded-lg transition hover:cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {submittingSubtasks ? "Suggesting..." : "AI Suggest"}
+              </button>
+            )}
             <button
               onClick={handleToggleStatus}
               className={`text-white text-sm w-[45%] py-1.5 px-4 rounded-lg transition font-medium shadow-inner hover:cursor-pointer ${

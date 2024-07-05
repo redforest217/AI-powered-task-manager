@@ -1,3 +1,4 @@
+// components/AddTaskForm.tsx
 import { NewTask } from "@/types";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
@@ -26,7 +27,7 @@ export default function AddTaskForm({ onAddTask }: AddTaskFormProps) {
       dueDate: dueDate,
     });
 
-    toast.success("Task Added Successfully.");
+    // Toast for task added is now handled in page.tsx after state update
     setTitle("");
     setDescription("");
     setDueDate("");

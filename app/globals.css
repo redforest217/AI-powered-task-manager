@@ -1,10 +1,10 @@
 @import "tailwindcss";
-/* My Fav Color Codes: #FFFFFC  #37BFF7 #1E293B */
 
 .text-gradient {
   @apply bg-gradient-to-r from-sky-400 via-blue-500 to-purple-500 text-transparent bg-clip-text;
 }
 
+/* --------------------------Gradient Borders------------------------------------ */
 .border-gradient-emerald {
   position: relative;
   z-index: 0;
@@ -17,7 +17,7 @@
   inset: 0;
   padding: 2px;
   border-radius: inherit;
-  background: linear-gradient(to right, #10b981, #34d399);
+  background: linear-gradient(to right, #065f46, #048d66);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
@@ -36,13 +36,20 @@
   inset: 0;
   padding: 2px;
   border-radius: inherit;
-  background: linear-gradient(to right, #d946ef, #f472b6);
-  /* fuchsia shades */
+  background: linear-gradient(to right, #701a75, #be185d);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   z-index: -1;
 }
+
+/* --------------------------Gradient Borders------------------------------------ */
+
+
+
+
+
+
 
 /* -------------------loader---------------- */
 .loader-container {
@@ -106,35 +113,3 @@
 }
 
 /* -------------------loader---------------- */
-
-
-
-
-
-
-
-
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-} */
